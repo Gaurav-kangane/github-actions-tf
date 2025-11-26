@@ -19,22 +19,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-    steps:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-    steps:
       - name: Terraform init
         run: terraform init
 
-    steps:
       - name: Terraform Validate
         run: terraform validate 
 
-    steps:
       - name: Terraform plan
         run: terraform plan -out=tfplan
 
-    steps:
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
