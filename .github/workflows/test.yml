@@ -4,6 +4,14 @@ on:
   #push:                # whenever we do change in code pipeline will run automatically
     #branches: [ main ]
   workflow_dispatch:   ### Manual Trigger only
+    inputs:
+      action:
+        description: Select Apply or Destroy
+        required: true
+        type: choice
+        options:
+          - apply
+          - destroy
 
 jobs:
   terraform:
@@ -32,4 +40,9 @@ jobs:
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform apply -auto-approve tfplan
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve
