@@ -1,1 +1,40 @@
+name : Terraform Deploy
 
+on:
+  #push:                # whenever we do change in code pipeline will run automatically
+    #branches: [ main ]
+  workflow_dispatch:   ### Manual Trigger only
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env: 
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ap-south-1  #changes is needed
+
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+    steps:
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+    steps:
+      - name: Terraform init
+        run: terraform init
+
+    steps:
+      - name: Terraform Validate
+        run: terraform validate 
+
+    steps:
+      - name: Terraform plan
+        run: terraform plan -out=tfplan
+
+    steps:
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
