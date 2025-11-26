@@ -15,3 +15,8 @@ resource "aws_subnet" "name2" {
     }
   
 }
+
+resource "aws_s3_bucket" "mybucket" {
+        bucket = "kangane"
+        region = "ap-south-1"
+}
